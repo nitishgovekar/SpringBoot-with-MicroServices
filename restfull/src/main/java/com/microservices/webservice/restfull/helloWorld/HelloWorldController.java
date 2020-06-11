@@ -1,4 +1,4 @@
-package com.microservices.webservice.restfull;
+package com.microservices.webservice.restfull.helloWorld;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
