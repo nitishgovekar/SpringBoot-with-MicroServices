@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.microservices.webservice.restfull.exceptions.UserNotFoundException;
 import com.microservices.webservice.restfull.pojo.User;
 import com.microservices.webservice.restfull.pojo.UserDaoService;
 
@@ -33,7 +34,12 @@ public class UserController {
 	@GetMapping("/users/{id}")
 	public User getUserById(@PathVariable int id) {
 
-		return userService.findById(id);
+		User user= userService.findById(id);
+		
+		if(user == null) 
+			throw new UserNotFoundException("id :"+id);
+
+		return user;
 	}
 	
 	//Insert Records
