@@ -4,6 +4,9 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.ControllerLinkBuilder;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,12 +36,17 @@ public class UserController {
 	
 	//Get records by Id
 	@GetMapping("/users/{id}")
-	public User getUserById(@PathVariable int id) {
+	public EntityModel<User> getUserById(@PathVariable int id) {
 		User user= userService.findById(id);
 		if(user == null) 
 			throw new UserNotFoundException("id :"+id);
-
-		return user;
+		
+		//Implementing HateOAS
+		EntityModel<User> model = new EntityModel<>(user);
+		WebMvcLinkBuilder linkTo = WebMvcLinkBuilder.linkTo(ControllerLinkBuilder.methodOn(this.getClass()).getAllUserDetails());
+		model.add(linkTo.withRel("all-users"));
+	 
+		return model;
 	}
 	
 	//Insert Records
@@ -52,19 +60,16 @@ public class UserController {
 				buildAndExpand(savedUser.getId()).toUri();
 
 		return ResponseEntity.created(location).build();
-
 	}
 	
 	
 	@DeleteMapping("/users/{id}")
 	public String deleteById(@PathVariable int id )  {
-
 		User deleteUser = userService.deleteById(id);
 		if(deleteUser == null)
 			return "No record found!";
 
 		return "Record Deleted Successfully!";
-
 	}
 	
 }
