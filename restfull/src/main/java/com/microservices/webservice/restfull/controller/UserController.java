@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,9 +34,7 @@ public class UserController {
 	//Get records by Id
 	@GetMapping("/users/{id}")
 	public User getUserById(@PathVariable int id) {
-
 		User user= userService.findById(id);
-		
 		if(user == null) 
 			throw new UserNotFoundException("id :"+id);
 
@@ -46,7 +45,6 @@ public class UserController {
 	@PostMapping("/users")
 	public ResponseEntity<Object> createUser(@RequestBody User user) {
 		User savedUser = userService.save(user);
-		
 		//This will set response as Created and status code as 201
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest()
@@ -56,4 +54,17 @@ public class UserController {
 		return ResponseEntity.created(location).build();
 
 	}
+	
+	
+	@DeleteMapping("/users/{id}")
+	public String deleteById(@PathVariable int id )  {
+
+		User deleteUser = userService.deleteById(id);
+		if(deleteUser == null)
+			return "No record found!";
+
+		return "Record Deleted Successfully!";
+
+	}
+	
 }
