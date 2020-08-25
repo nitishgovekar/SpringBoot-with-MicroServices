@@ -34,6 +34,7 @@ public class User {
 		this.name = name;
 		this.birthDate = birthDate;
 	}
+	public User() {}
 
 	public Integer getId() {
 		return id;
