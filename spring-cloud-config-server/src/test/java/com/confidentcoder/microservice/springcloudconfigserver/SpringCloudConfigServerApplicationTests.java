@@ -1,4 +1,4 @@
-package com.confidentcoder.microservices.springcloudconfigserver;
+package com.confidentcoder.microservice.springcloudconfigserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
